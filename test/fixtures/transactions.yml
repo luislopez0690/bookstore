@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: MyString
+  book: MyString
+  tStamp: 2018-02-08
+  tType: MyString
+  orderNumber: 1
+  quantity: 1
+
+two:
+  user: MyString
+  book: MyString
+  tStamp: 2018-02-08
+  tType: MyString
+  orderNumber: 1
+  quantity: 1
