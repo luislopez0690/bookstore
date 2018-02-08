@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :join_table_users_books
   resources :transactions
   resources :books
   resources :users

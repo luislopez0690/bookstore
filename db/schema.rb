@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208165525) do
+ActiveRecord::Schema.define(version: 20180208175812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 20180208165525) do
     t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "join_table_users_books", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "book_id"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_join_table_users_books_on_book_id"
+    t.index ["user_id"], name: "index_join_table_users_books_on_user_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -46,4 +56,6 @@ ActiveRecord::Schema.define(version: 20180208165525) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "join_table_users_books", "books"
+  add_foreign_key "join_table_users_books", "users"
 end
