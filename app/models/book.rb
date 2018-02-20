@@ -1,3 +1,4 @@
 class Book < ApplicationRecord
-  has_many :users, through: :JoinTableUsersBooks
+  has_many :users_books
+  has_many :users, through: :users_books
 end

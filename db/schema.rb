@@ -27,16 +27,6 @@ ActiveRecord::Schema.define(version: 20180208175812) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "join_table_users_books", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "book_id"
-    t.integer "amount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["book_id"], name: "index_join_table_users_books_on_book_id"
-    t.index ["user_id"], name: "index_join_table_users_books_on_user_id"
-  end
-
   create_table "transactions", force: :cascade do |t|
     t.string "user"
     t.string "book"
@@ -56,6 +46,15 @@ ActiveRecord::Schema.define(version: 20180208175812) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "join_table_users_books", "books"
-  add_foreign_key "join_table_users_books", "users"
+  create_table "users_books", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_users_books_on_book_id"
+    t.index ["user_id"], name: "index_users_books_on_user_id"
+  end
+
+  add_foreign_key "users_books", "books"
+  add_foreign_key "users_books", "users"
 end
