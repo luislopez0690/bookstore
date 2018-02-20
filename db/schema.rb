@@ -18,9 +18,9 @@ ActiveRecord::Schema.define(version: 20180208175812) do
   create_table "books", force: :cascade do |t|
     t.string "name"
     t.string "author"
-    t.string "sDescription"
-    t.string "lDescription"
-    t.string "image"
+    t.string "short_description"
+    t.string "long_description"
+    t.string "image_url"
     t.decimal "price"
     t.integer "amount"
     t.datetime "created_at", null: false
@@ -30,9 +30,7 @@ ActiveRecord::Schema.define(version: 20180208175812) do
   create_table "transactions", force: :cascade do |t|
     t.string "user"
     t.string "book"
-    t.date "tStamp"
-    t.string "tType"
-    t.integer "orderNumber"
+    t.string "type"
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -41,7 +39,7 @@ ActiveRecord::Schema.define(version: 20180208175812) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "password"
-    t.string "userType"
+    t.string "user_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

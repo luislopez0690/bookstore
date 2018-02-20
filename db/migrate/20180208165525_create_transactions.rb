@@ -3,9 +3,7 @@ class CreateTransactions < ActiveRecord::Migration[5.1]
     create_table :transactions do |t|
       t.string :user
       t.string :book
-      t.date :tStamp
-      t.string :tType
-      t.integer :orderNumber
+      t.string :type
       t.integer :quantity
 
       t.timestamps
