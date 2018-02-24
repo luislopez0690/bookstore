@@ -7,4 +7,5 @@ class BookSerializer < ActiveModel::Serializer
   :price,
   :amount
 
+  has_many :users
 end

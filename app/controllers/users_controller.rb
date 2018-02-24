@@ -26,8 +26,9 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
+    @user = User.joins(:books).find(params[:id])
+      if @user.update_attribute(user_params)
+      render json:@user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -46,6 +47,24 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:name, :password, :userType)
+      new_hash = {}
+      params[:data][:attributes].each do |key, value|
+        new_hash[key.to_s.gsub("-","_")] = value
+
+    end
+
+    if params[:data][:relationships][:"books"][:data]
+      puts "----------"
+      puts params[:data][:relationships][:"books"][:data]
+      puts "----------"
+      new_hash[:books_id] = params[:data][:relationships][:"books"][:data]
+
+    end
+
+    new_params = ActionController::Parameters.new(new_hash)
+    new_params.permit(
+      :user_id,
+      :books_id
+    )
     end
 end

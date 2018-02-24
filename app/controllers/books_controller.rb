@@ -3,13 +3,19 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.all
+    if !params[:filter]
+      @books = Book.all  
+    else
+      id_array = params[:filter][:id].split(',')
+      @books=Book.where(id: id_array)
+    end
 
     render json: @books
   end
 
   # GET /books/1
   def show
+    @books=Book.find(params[:id])
     render json: @book
   end
 
