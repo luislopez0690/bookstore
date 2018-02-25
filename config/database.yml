@@ -20,14 +20,14 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: llopez
-  password: 'llopez'
+  username: luis
+  password: 'luis'
 
 development:
   <<: *default
   database: library_api_development
-  username: llopez
-  password: 'llopez'
+  username: luis
+  password: 'luis'
   host: localhost
   pool: 5
   timeout: 5000
@@ -64,8 +64,8 @@ development:
 test:
   <<: *default
   database: library_api_test
-  username: llopez
-  password: 'llopez'
+  username: luis
+  password: 'luis'
   host: localhost
   pool: 5
   timeout: 5000

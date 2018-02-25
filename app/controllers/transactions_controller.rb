@@ -57,13 +57,13 @@ class TransactionsController < ApplicationController
           puts value.inspect
           puts key.inspect
           if value[:data].kind_of?(Array)
-            new_hash[key.to_s.gsub("-","_")+"_id"] = value[:data].map {|i| i[:id]}
+            new_hash[(key.to_s.gsub("-","_").singularize) + "_id"] = value[:data].map {|i| i[:id]}
           else
-          new_hash[key.to_s.gsub("-","_")+"_id"] = value[:data][:id]
+          new_hash[(key.to_s.gsub("-","_").singularize) + "_id"] = value[:data][:id]
           end
         end
       puts new_hash.inspect
-      xxxxxxx
+
     new_params = ActionController::Parameters.new(new_hash)
     new_params.permit(
         :book_id,

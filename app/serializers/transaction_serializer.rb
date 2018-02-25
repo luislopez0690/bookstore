@@ -1,6 +1,4 @@
 class TransactionSerializer < ActiveModel::Serializer
   attributes :user,
-  :book,
-  :type,
-  :quantity
+  :book
 end
