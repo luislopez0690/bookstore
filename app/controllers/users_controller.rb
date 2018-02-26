@@ -26,7 +26,6 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    @user = User.joins(:books).find(params[:id])
       if @user.update_attribute(user_params)
       render json:@user
     else
@@ -50,15 +49,10 @@ class UsersController < ApplicationController
       new_hash = {}
       params[:data][:attributes].each do |key, value|
         new_hash[key.to_s.gsub("-","_")] = value
-
     end
-
     if params[:data][:relationships][:"books"][:data]
-      puts "----------"
       puts params[:data][:relationships][:"books"][:data]
-      puts "----------"
       new_hash[:books_id] = params[:data][:relationships][:"books"][:data]
-
     end
 
     new_params = ActionController::Parameters.new(new_hash)

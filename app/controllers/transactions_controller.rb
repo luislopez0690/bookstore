@@ -52,15 +52,12 @@ class TransactionsController < ApplicationController
       new_hash[key.to_s.gsub("-","_")] = value
     end
       params[:data][:relationships].each do |key, value|
-        puts value.inspect
-        puts key.inspect
         if value[:data].kind_of?(Array)
           new_hash[(key.to_s.gsub("-","_").singularize) + "_id"] = value[:data].map {|i| i[:id]}
         else
           new_hash[(key.to_s.gsub("-","_").singularize) + "_id"] = value[:data][:id]
         end
       end
-    puts new_hash.inspect
     new_params = ActionController::Parameters.new(new_hash)
     new_params.permit(
         :book_id,

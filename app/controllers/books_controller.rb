@@ -4,7 +4,7 @@ class BooksController < ApplicationController
   # GET /books
   def index
     if !params[:filter]
-      @books = Book.all  
+      @books = Book.all
     else
       id_array = params[:filter][:id].split(',')
       @books=Book.where(id: id_array)
@@ -52,6 +52,6 @@ class BooksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def book_params
-      params.require(:book).permit(:name, :author, :short_description, :long_description, :image_url, :price, :amount)
+      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount)
     end
 end

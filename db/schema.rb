@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20180208175812) do
   create_table "books", force: :cascade do |t|
     t.string "name"
     t.string "author"
-    t.string "short_description"
-    t.string "long_description"
+    t.string "summary"
+    t.string "description"
     t.string "image_url"
     t.decimal "price"
     t.integer "amount"
