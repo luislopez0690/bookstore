@@ -13,6 +13,19 @@ class UsersController < ApplicationController
     render json: @user
   end
 
+  # GET /user
+  def get_user_by_name
+    if params[:name]
+      user = User.where(name: params[:name]).first
+    elsif params[:password]
+      user = User.where(password: params[:password]).first
+    render json: user
+  else
+    render json: user.errors, status: unprocessable_entity
+  end
+  end
+
+
   # POST /users
   def create
     @user = User.new(user_params)
@@ -48,15 +61,20 @@ class UsersController < ApplicationController
     def user_params
       new_hash = {}
       params[:data][:attributes].each do |key, value|
-        new_hash[key.to_s.gsub("-","_")] = value
-    end
-    if params[:data][:relationships][:"books"][:data]
-      puts params[:data][:relationships][:"books"][:data]
-      new_hash[:books_id] = params[:data][:relationships][:"books"][:data]
-    end
-
-    new_params = ActionController::Parameters.new(new_hash)
+      new_hash[key.to_s.gsub("-","_")] = value
+      end
+      if !params[:data][:relationships].nil?
+        params[:data][:relationships].each do |key, value|
+          if value[:data].kind_of?(Array)
+            new_hash[(key.to_s.gsub("-","_").singularize) + "_id"] = value[:data].map {|i| i[:id]}
+          else
+            new_hash[(key.to_s.gsub("-","_").singularize) + "_id"] = value[:data][:id]
+          end
+        end
+      end
+      new_params = ActionController::Parameters.new(new_hash)
     new_params.permit(
+      :name,
       :user_id,
       :books_id
     )
