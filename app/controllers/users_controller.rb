@@ -29,11 +29,14 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
-
-    if @user.save
+    if !User.where(name: @user.name).exists?
+      if @user.save
       render json: @user, status: :created, location: @user
+      else
+      render json:{errors:["Failed to save"]}, status:500
+      end
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json:{errors:["Username already, try logging in instead"]}, status:401
     end
   end
 
