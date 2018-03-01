@@ -29,6 +29,9 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
+
+    puts @user.size
+    puts "_____HOLA______"
     if !User.where(name: @user.name).exists?
       if @user.save
       render json: @user, status: :created, location: @user
@@ -79,7 +82,8 @@ class UsersController < ApplicationController
     new_params.permit(
       :name,
       :user_id,
-      :books_id
+      :books_id,
+      :password
     )
     end
 end
