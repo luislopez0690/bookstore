@@ -28,16 +28,20 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.new(user_params)
-
-    puts @user.size
-    puts "_____HOLA______"
-    if !User.where(name: @user.name).exists?
+    puts "HOLA"
+      puts User.find(user_params[:name])
+      puts "CHAO"
+    if !User.where(name: user_params[:name]).exists?
+      @user = User.new(user_params)
       if @user.save
       render json: @user, status: :created, location: @user
       else
       render json:{errors:["Failed to save"]}, status:500
       end
+    elsif (User.where(name: @user.name).exists? && User.where(password: @user.password).exists?)
+      puts "ENTERED HERE"
+      puts User.where(name: @user.name).exists? && User.where(name: @user.password).exists?
+      render json: @user, status: :created
     else
       render json:{errors:["Username already, try logging in instead"]}, status:401
     end
