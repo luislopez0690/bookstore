@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
+    puts "HOLA INDEX"
     @users = User.all
 
     render json: @users
@@ -28,19 +29,38 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    puts "HOLA"
-      puts User.find(user_params[:name])
-      puts "CHAO"
-    if !User.where(name: user_params[:name]).exists?
+    if !User.where(name: user_params[:name])
       @user = User.new(user_params)
       if @user.save
       render json: @user, status: :created, location: @user
       else
       render json:{errors:["Failed to save"]}, status:500
       end
-    elsif (User.where(name: @user.name).exists? && User.where(password: @user.password).exists?)
-      puts "ENTERED HERE"
-      puts User.where(name: @user.name).exists? && User.where(name: @user.password).exists?
+    elsif (User.where(name: user_params[:name])).any? && (User.where(password: user_params[:password])).any?
+      puts (User.where(name: user_params[:name])).any?
+      puts (User.where(password: user_params[:password])).any?
+      puts (User.where(name: user_params[:name])).any? && (User.where(password: user_params[:password])).any?
+      @user = User.find_by(name: user_params[:name])
+      render json: @user, status: :created
+    else
+      render json:{errors:["Username already, try logging in instead"]}, status:401
+    end
+  end
+
+  def signup
+    puts "HOLA SIGNUP"
+    if !User.where(name: params[:name])
+      @user = User.new(params)
+      if @user.save
+      render json: @user, status: :created, location: @user
+      else
+      render json:{errors:["Failed to save"]}, status:500
+      end
+    elsif (User.where(name: params[:name])).any? && (User.where(password: params[:password])).any?
+      puts (User.where(name: params[:name])).any?
+      puts (User.where(password: params[:password])).any?
+      puts (User.where(name: params[:name])).any? && (User.where(password: params[:password])).any?
+      @user = User.find_by(name: params[:name])
       render json: @user, status: :created
     else
       render json:{errors:["Username already, try logging in instead"]}, status:401
