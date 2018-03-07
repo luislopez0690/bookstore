@@ -3,9 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    puts "HOLA INDEX"
     @users = User.all
-
     render json: @users
   end
 
@@ -14,31 +12,12 @@ class UsersController < ApplicationController
     render json: @user
   end
 
-  # POST /users
-  # def create
-  #   if !User.where(name: user_params[:name])
-  #     @user = User.new(user_params)
-  #     if @user.save
-  #     render json: @user, status: :created, location: @user
-  #     else
-  #     render json:{errors:["Failed to save"]}, status:500
-  #     end
-  #   elsif (User.where(name: user_params[:name])).any? && (User.where(password: user_params[:password])).any?
-  #     puts (User.where(name: user_params[:name])).any?
-  #     puts (User.where(password: user_params[:password])).any?
-  #     puts (User.where(name: user_params[:name])).any? && (User.where(password: user_params[:password])).any?
-  #     @user = User.find_by(name: user_params[:name])
-  #     render json: @user, status: :created
-  #   else
-  #     render json:{errors:["Username already, try logging in instead"]}, status:401
-  #   end
-  # end
-
   def signup
-
-    if !User.where(name: params[:name]).any?
+    User.clean_input(params)
+    if !User.where(email: params[:email]).any?
       @user = User.create({
         :name => params[:name],
+        :email => params[:email],
         :password => params[:password]
         })
       if @user.save
@@ -52,12 +31,12 @@ class UsersController < ApplicationController
   end
 
   def login
-    if (User.where(name: params[:name])).any? && (User.where(password: params[:password])).any?
-      puts (User.where(name: params[:name])).any? && (User.where(password: params[:password])).any?
-      @user = User.find_by(name: params[:name])
+    User.clean_input(params)
+    if (User.where(email: params[:email])).any? && (User.where(password: params[:password])).any?
+      @user = User.find_by(email: params[:email])
       render json: @user, status: :created
     else
-      render json:{errors:["Username already, try logging in instead"]}, status:401
+      render json:{errors:["Username or Password error"]}, status:401
     end
   end
 
@@ -99,6 +78,8 @@ class UsersController < ApplicationController
       new_params = ActionController::Parameters.new(new_hash)
     new_params.permit(
       :name,
+      :email,
+      :user_type,
       :user_id,
       :books_id,
       :password
