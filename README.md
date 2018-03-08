@@ -9,8 +9,6 @@ Things you may want to cover:
 
 * System dependencies
 
-Use as username and password for the Database 'llopez'
-
 * Configuration
 
 * Database creation

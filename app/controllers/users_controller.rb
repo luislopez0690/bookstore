@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   end
 
   def signup
+    #Refactor clean_input
     User.clean_input(params)
     if !User.where(email: params[:email]).any?
       @user = User.create({
@@ -31,6 +32,7 @@ class UsersController < ApplicationController
   end
 
   def login
+    #Refactor clean_input 
     User.clean_input(params)
     if (User.where(email: params[:email])).any? && (User.where(password: params[:password])).any?
       @user = User.find_by(email: params[:email])
