@@ -3,6 +3,7 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
+    puts Book.where(name: params[:name])
     if !params[:filter]
       @books = Book.all
     else
