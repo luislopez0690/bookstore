@@ -15,6 +15,7 @@ class TransactionsController < ApplicationController
 
   # POST /transactions
   def create
+
     @transaction = Transaction.new(transaction_params)
 
     if @transaction.save
@@ -46,6 +47,21 @@ class TransactionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def transaction_params
-      params.require(:transaction).permit(:user, :book, :tStamp, :tType, :orderNumber, :quantity)
+      new_hash = {}
+      params[:data][:attributes].each do |key, value|
+      new_hash[key.to_s.gsub("-","_")] = value
+    end
+      params[:data][:relationships].each do |key, value|
+        if value[:data].kind_of?(Array)
+          new_hash[(key.to_s.gsub("-","_").singularize) + "_id"] = value[:data].map {|i| i[:id]}
+        else
+          new_hash[(key.to_s.gsub("-","_").singularize) + "_id"] = value[:data][:id]
+        end
+      end
+    new_params = ActionController::Parameters.new(new_hash)
+    new_params.permit(
+        :book_id,
+        :user_id
+    )
     end
 end

@@ -18,44 +18,44 @@ ActiveRecord::Schema.define(version: 20180208175812) do
   create_table "books", force: :cascade do |t|
     t.string "name"
     t.string "author"
-    t.string "sDescription"
-    t.string "lDescription"
-    t.string "image"
+    t.string "summary"
+    t.string "description"
+    t.string "image_url"
     t.decimal "price"
     t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "join_table_users_books", force: :cascade do |t|
+  create_table "transactions", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "book_id"
-    t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["book_id"], name: "index_join_table_users_books_on_book_id"
-    t.index ["user_id"], name: "index_join_table_users_books_on_user_id"
-  end
-
-  create_table "transactions", force: :cascade do |t|
-    t.string "user"
-    t.string "book"
-    t.date "tStamp"
-    t.string "tType"
-    t.integer "orderNumber"
-    t.integer "quantity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_transactions_on_book_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
+    t.string "email"
     t.string "password"
-    t.string "userType"
+    t.string "user_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "join_table_users_books", "books"
-  add_foreign_key "join_table_users_books", "users"
+  create_table "users_books", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_users_books_on_book_id"
+    t.index ["user_id"], name: "index_users_books_on_user_id"
+  end
+
+  add_foreign_key "transactions", "books"
+  add_foreign_key "transactions", "users"
+  add_foreign_key "users_books", "books"
+  add_foreign_key "users_books", "users"
 end
