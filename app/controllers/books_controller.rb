@@ -3,9 +3,15 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    puts Book.where(name: params[:name])
+
+
+
     if !params[:filter]
-      @books = Book.all
+      if params[:name]
+      @books = Book.where("name ILIKE ?", "%#{params[:name]}%")
+      else
+      @books = Book.where("author ILIKE ?", "%#{params[:author]}%")
+      end
     else
       id_array = params[:filter][:id].split(',')
       @books = Book.where(id: id_array)
