@@ -7,6 +7,9 @@ class BooksController < ApplicationController
 
 
     if !params[:filter]
+      if params[:page]
+        @books = Book.page(params[:page][:number]).per(params[:page][:size])
+      end
       if params[:name]
       @books = Book.where("name ILIKE ?", "%#{params[:name]}%")
       else
