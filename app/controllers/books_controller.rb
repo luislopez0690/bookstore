@@ -3,24 +3,23 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-
-
-
-    if !params[:filter]
-      if params[:page]
-        @books = Book.page(params[:page][:number]).per(params[:page][:size])
-      end
+      info = {
+        page: params[:page] || 1,
+        per_page: params[:per_page] || 9
+      }
+      if !params[:filter]
       if params[:name]
-      @books = Book.where("name ILIKE ?", "%#{params[:name]}%")
+
+      @books = Book.where("name ILIKE ?", "%#{params[:name]}%").page(info[:page]).per(info[:per_page])
       else
-      @books = Book.where("author ILIKE ?", "%#{params[:author]}%")
+      @books = Book.where("author ILIKE ?", "%#{params[:author]}%").page(info[:page]).per(info[:per_page])
       end
     else
       id_array = params[:filter][:id].split(',')
       @books = Book.where(id: id_array)
     end
+    render json: @books, params: info, meta: pagination_dict(@books)
 
-    render json: @books
   end
 
   # GET /books/1
