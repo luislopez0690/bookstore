@@ -5,20 +5,21 @@ class BooksController < ApplicationController
   def index
       info = {
         page: params[:page] || 1,
-        per_page: params[:per_page] || 9
+        per_page: 9
       }
       if !params[:filter]
+
       if params[:name]
 
-      @books = Book.where("name ILIKE ?", "%#{params[:name]}%").page(info[:page]).per(info[:per_page])
+      @books = Book.where("name ILIKE ?", "%#{params[:name]}%").limit(info[:per_page]).offset(info[:page] * 9)
       else
-      @books = Book.where("author ILIKE ?", "%#{params[:author]}%").page(info[:page]).per(info[:per_page])
+      @books = Book.where("author ILIKE ?", "%#{params[:author]}%").limit(info[:per_page]).offset(info[:page] * 1)
       end
     else
       id_array = params[:filter][:id].split(',')
       @books = Book.where(id: id_array)
     end
-    render json: @books, params: info, meta: pagination_dict(@books)
+    render json: @books, params: info
 
   end
 
