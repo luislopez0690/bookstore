@@ -9,14 +9,12 @@ class BooksController < ApplicationController
          total_pages: (Book.all.length.to_f / 9 ).round
       }
       @books = Book.all
-      if !params[:filter]
-
-      if params[:name]
-        puts 'total Pages',info[:total_pages],
-        @books = @books.where("name ILIKE ?", "%#{params[:name]}%")
-      elsif params[:author]
-        @books = @books.where("author ILIKE ?", "%#{params[:author]}%")
-
+    if !params[:filter]
+      if params[:filterValue]
+        current_filter = params[:filterValue]
+        puts 'columns:', Book.column_names.select(|x| x.current_filter == current_filter) 
+        @books = @books.where( "author ILIKE ?", "%#{params[current_filter]}%")
+        info[:total_pages] = ( @books.count / 9 ).round
       end
     else
       id_array = params[:filter][:id].split(',')
@@ -65,6 +63,6 @@ class BooksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def book_params
-      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page)
+      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page, :filterValue)
     end
 end
