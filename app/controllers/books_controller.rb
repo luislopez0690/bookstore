@@ -13,7 +13,7 @@ class BooksController < ApplicationController
       if params[:filterValue] == "name" or "author"
         current_filter = params[:filterValue]
           @books = @books.where( "#{params[:filterValue]} ILIKE ?","%#{params[:currentSearch]}%")
-          info[:total_pages] = ( @books.count / 9 ).round
+          info[:total_pages] = ( @books.count / info[:per_page] ).round
       end
     else
       id_array = params[:filter][:id].split(',')
