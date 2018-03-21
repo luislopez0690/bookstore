@@ -10,10 +10,15 @@ class BooksController < ApplicationController
       }
       @books = Book.all
     if !params[:filter]
-      if params[:filterValue] == "name" or "author"
-        current_filter = params[:filterValue]
-          @books = @books.where( "#{params[:filterValue]} ILIKE ?","%#{params[:currentSearch]}%")
-          info[:total_pages] = ( @books.count / info[:per_page] ).round
+      if params[:filterValue] || params[:currentSearch]
+      @books =  @books.where( "name ILIKE ? OR author ILIKE ?","%#{params[:currentSearch]}%","%#{params[:currentSearch]}%").where("category ILIKE ?","%#{params[:filterValue]}")
+      info[:total_pages] = ( @books.count / info[:per_page] ).round
+      elsif params[:filterValue]
+        @books = @books.where("category ILIKE ?","%#{params[:filterValue]}")
+        info[:total_pages] = ( @books.count / info[:per_page] ).round
+      else
+        @books = @books.where( "name ILIKE ? OR author ILIKE ?","%#{params[:currentSearch]}%","%#{params[:currentSearch]}%")
+        info[:total_pages] = ( @books.count / info[:per_page] ).round
       end
     else
       id_array = params[:filter][:id].split(',')
@@ -62,6 +67,6 @@ class BooksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def book_params
-      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page, :filterValue, :currentSearch)
+      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page, :filterValue, :currentSearch, :category)
     end
 end

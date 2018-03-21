@@ -3,6 +3,7 @@ class CreateBooks < ActiveRecord::Migration[5.1]
     create_table :books do |t|
       t.string :name
       t.string :author
+      t.string :category
       t.string :summary
       t.string :description
       t.string :image_url
