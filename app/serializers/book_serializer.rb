@@ -2,6 +2,7 @@ class BookSerializer < ActiveModel::Serializer
   attributes :name,
   :author,
   :summary,
+  :category,
   :description,
   :image_url,
   :price,

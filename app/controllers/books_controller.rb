@@ -3,14 +3,29 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    if !params[:filter]
+      info = {
+        page: params[:page] || 0,
+        per_page: 9,
+       total_pages: (Book.all.length.to_f / 9 ).round
+      }
       @books = Book.all
+    if !params[:filter]
+      if params[:filterValue] || params[:currentSearch]
+      @books =  @books.where( "name ILIKE ? OR author ILIKE ?","%#{params[:currentSearch]}%","%#{params[:currentSearch]}%").where("category ILIKE ?","%#{params[:filterValue]}")
+      info[:total_pages] = ( @books.count / info[:per_page] ).round
+      elsif params[:filterValue]
+        @books = @books.where("category ILIKE ?","%#{params[:filterValue]}")
+        info[:total_pages] = ( @books.count / info[:per_page] ).round
+      else
+        @books = @books.where( "name ILIKE ? OR author ILIKE ?","%#{params[:currentSearch]}%","%#{params[:currentSearch]}%")
+        info[:total_pages] = ( @books.count / info[:per_page] ).round
+      end
     else
       id_array = params[:filter][:id].split(',')
-      @books = Book.where(id: id_array)
+      @books = @books.where(id: id_array)
     end
+    render json: @books.offset(info[:page].to_i * 9).limit(info[:per_page]), params: info, meta: info
 
-    render json: @books
   end
 
   # GET /books/1
@@ -52,6 +67,6 @@ class BooksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def book_params
-      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount)
+      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page, :filterValue, :currentSearch, :category)
     end
 end
