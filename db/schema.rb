@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 20180208165525) do
     t.string "image_url"
     t.decimal "price"
     t.integer "amount"
-    t.integer "available"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -32,7 +31,6 @@ ActiveRecord::Schema.define(version: 20180208165525) do
   create_table "transactions", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "book_id"
-    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_transactions_on_book_id"
