@@ -6,9 +6,7 @@ class BookSerializer < ActiveModel::Serializer
   :description,
   :image_url,
   :price,
-  :amount,
-  :available
+  :amount
 
-  has_many :transactions
   has_many :users
 end

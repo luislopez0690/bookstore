@@ -10,7 +10,6 @@ class TransactionsController < ApplicationController
 
   # GET /transactions/1
   def show
-
     render json: @transaction
   end
 
@@ -18,6 +17,7 @@ class TransactionsController < ApplicationController
   def create
 
     @transaction = Transaction.new(transaction_params)
+
     if @transaction.save
       render json: @transaction, status: :created, location: @transaction
     else
@@ -61,8 +61,7 @@ class TransactionsController < ApplicationController
     new_params = ActionController::Parameters.new(new_hash)
     new_params.permit(
         :book_id,
-        :user_id,
-        :quantity,
+        :user_id
     )
     end
 end
