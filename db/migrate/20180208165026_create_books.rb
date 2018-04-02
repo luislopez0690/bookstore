@@ -9,7 +9,7 @@ class CreateBooks < ActiveRecord::Migration[5.1]
       t.string :image_url
       t.decimal :price
       t.integer :amount
-
+      t.integer :total
       t.timestamps
     end
   end

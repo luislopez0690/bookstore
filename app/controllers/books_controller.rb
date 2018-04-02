@@ -3,6 +3,7 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
+
       info = {
         page: params[:page] || 0,
         per_page: 9,
@@ -67,6 +68,6 @@ class BooksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def book_params
-      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page, :filterValue, :currentSearch, :category)
+      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page, :filterValue, :currentSearch, :category, :total)
     end
 end
