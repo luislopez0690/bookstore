@@ -15,6 +15,7 @@ end
 def order_transactions_by_books
    return ordered_books = self.transactions.order(:book_id)
 end
+
   def self.clean_input(params)
     params[:email] = params[:email].delete(' ')
     params[:email] = params[:email].downcase
