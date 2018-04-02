@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user , group_transactions: @user.group_transactions_by_books, order_transactions: @user.order_transactions_by_books
   end
 
   def signup
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   end
 
   def login
-    #Refactor clean_input 
+    #Refactor clean_input
     User.clean_input(params)
     if (User.where(email: params[:email])).any? && (User.where(password: params[:password])).any?
       @user = User.find_by(email: params[:email])
@@ -61,7 +61,6 @@ class UsersController < ApplicationController
     def set_user
       @user = User.find(params[:id])
     end
-
     # Only allow a trusted parameter "white list" through.
     def user_params
       new_hash = {}
