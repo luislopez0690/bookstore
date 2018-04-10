@@ -25,6 +25,9 @@ class BooksController < ApplicationController
       id_array = params[:filter][:id].split(',')
       @books = @books.where(id: id_array)
     end
+    @books.map do |book|
+      book.available_books
+    end
     render json: @books.offset(info[:page].to_i * 9).limit(info[:per_page]), params: info, meta: info
 
   end
@@ -68,6 +71,6 @@ class BooksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def book_params
-      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page, :filterValue, :currentSearch, :category, :total)
+      params.require(:book).permit(:name, :author, :summary, :description, :image_url, :price, :amount, :page, :filterValue, :currentSearch, :category, :available)
     end
 end

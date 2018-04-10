@@ -13,12 +13,9 @@ def group_transactions_by_books
 end
 
 def order_transactions_by_books
-   ordered_books = self.transactions.order(:book_id)
-   # ordered_books.each do |element|
-   #   element.created_at = element.created_at.strftime("%Y %m %d")
-   # end
-   return ordered_books
+   return ordered_books = self.transactions.order(:book_id)
 end
+
   def self.clean_input(params)
     params[:email] = params[:email].delete(' ')
     params[:email] = params[:email].downcase
