@@ -1,5 +1,11 @@
 class Transaction < ApplicationRecord
   belongs_to :user
   belongs_to :book
-  validates_numericality_of :quantity, greater_than: 0
+  validate :validate_correct_quantity
+end
+
+def validate_correct_quantity
+  if self.quantity < 0 ||  self.quantity > self.book.available
+    errors.add(:car, "Wrong amount of books, try again")
+  end
 end

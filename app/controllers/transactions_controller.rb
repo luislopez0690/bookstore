@@ -19,6 +19,7 @@ class TransactionsController < ApplicationController
 
     @transaction = Transaction.new(transaction_params)
     if @transaction.save
+      @transaction.book.available_books
       render json: @transaction, status: :created, location: @transaction
     else
       render json: @transaction.errors, status: :unprocessable_entity
