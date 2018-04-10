@@ -25,6 +25,9 @@ class BooksController < ApplicationController
       id_array = params[:filter][:id].split(',')
       @books = @books.where(id: id_array)
     end
+    @books.map do |book|
+      book.available_books
+    end
     render json: @books.offset(info[:page].to_i * 9).limit(info[:per_page]), params: info, meta: info
 
   end
